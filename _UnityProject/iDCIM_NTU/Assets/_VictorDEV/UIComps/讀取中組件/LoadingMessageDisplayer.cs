@@ -28,7 +28,7 @@ namespace VictorDev.Advanced
         #region [Initialize]
         private void Awake() => _originalTxt = TxtMsg.text.Trim();
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
             ButtonCancell.onClick.AddListener(()=>gameObject.SetActive(false));
             ButtonCancell.gameObject.SetActive(false);
@@ -36,7 +36,7 @@ namespace VictorDev.Advanced
             ToShow();
         }
 
-        private void OnDisable()
+        protected override  void OnDisable()
         {
             ButtonCancell.onClick.RemoveListener(()=>gameObject.SetActive(false));
             StopCoroutine(LoopingMessage());
