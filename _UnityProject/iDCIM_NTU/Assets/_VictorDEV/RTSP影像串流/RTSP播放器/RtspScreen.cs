@@ -5,6 +5,7 @@ using System.Linq;
 using UMP;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace VictorDev.RTSP
@@ -25,7 +26,8 @@ namespace VictorDev.RTSP
         [Header(">>> 播放/停止時Invoke {是否正在播放}")]
         public UnityEvent<bool> onPlayStatusEvent = new UnityEvent<bool>();
 
-        private UniversalMediaPlayer ump { get; set; }
+        private UniversalMediaPlayer Ump=> _ump ??= GetComponent<UniversalMediaPlayer>();
+        private UniversalMediaPlayer _ump;
         private RawImage rawImgRTSP { get; set; }
         private GameObject loadingBar { get; set; }
 
@@ -36,7 +38,6 @@ namespace VictorDev.RTSP
 
         private void Awake()
         {
-            ump = GetComponent<UniversalMediaPlayer>();
             rawImgRTSP = GetComponent<RawImage>();
             loadingBar = transform.GetChild(0).gameObject;
             loadingBar.SetActive(false);
@@ -51,7 +52,7 @@ namespace VictorDev.RTSP
         {
             IEnumerator CheckUMPInit()
             {
-                while (ump.RenderingObjects == null) yield return null;
+                while (Ump.RenderingObjects == null) yield return null;
                 action.Invoke();
             }
             coroutineList.Add(StartCoroutine(CheckUMPInit()));
@@ -61,13 +62,13 @@ namespace VictorDev.RTSP
         private void InitRtspListener()
         {
             // 註冊事件
-            ump.AddPathPreparedEvent(OnPathPreparedHandler);
-            ump.AddBufferingEvent(OnBufferingHandler);
-            ump.AddImageReadyEvent(OnImageReadyHandler);
-            ump.AddPreparedEvent(OnPreparedEventHandler);
-            ump.AddPlayingEvent(OnPlayingHandler);
-            ump.AddStoppedEvent(OnStoppedHandler);
-            ump.AddEncounteredErrorEvent(OnEncounteredErrorEventHandler);
+            Ump.AddPathPreparedEvent(OnPathPreparedHandler);
+            Ump.AddBufferingEvent(OnBufferingHandler);
+            Ump.AddImageReadyEvent(OnImageReadyHandler);
+            Ump.AddPreparedEvent(OnPreparedEventHandler);
+            Ump.AddPlayingEvent(OnPlayingHandler);
+            Ump.AddStoppedEvent(OnStoppedHandler);
+            Ump.AddEncounteredErrorEvent(OnEncounteredErrorEventHandler);
         }
 
         private void OnPathPreparedHandler(string url)
@@ -109,20 +110,23 @@ namespace VictorDev.RTSP
         private void OnEncounteredErrorEventHandler()
         {
             Debug.Log($"OnEncounteredErrorEventHandler");
+            if (gameObject.activeInHierarchy) Context_Play();
         }
 
-        [ContextMenu("- Play")] private void play() => Play();
+        public void Pause() => Ump.Pause();
+        
+        [ContextMenu("- Play")] private void Context_Play() => Play();
         public void Play(string url = "")
         {
             if (string.IsNullOrEmpty(url) == false) URL = url;
             if (string.IsNullOrEmpty(URL)) return;
 
-            ump.Path = URL;
-            CheckUMP_Init(ump.Play);
+            Ump.Path = URL;
+            CheckUMP_Init(Ump.Play);
         }
 
         [ContextMenu("- Stop")]
-        public void Stop() => ump.Stop();
+        public void Stop() => Ump.Stop();
 
         /// <summary>
         /// 新增渲染對像到RTSP渲染器內, 只適用RawImage與MeshRenderer
@@ -130,9 +134,9 @@ namespace VictorDev.RTSP
         /// </summary>
         public void AddRenderingTarget(GameObject target, bool isReset = false)
         {
-            if (isReset) Array.Clear(ump.RenderingObjects, 0, ump.RenderingObjects.Length);
+            if (isReset) Array.Clear(Ump.RenderingObjects, 0, Ump.RenderingObjects.Length);
 
-            ump.RenderingObjects = ump.RenderingObjects
+            Ump.RenderingObjects = Ump.RenderingObjects
                   .Concat(new[] { target }) // 合併新的 GameObject
                   .Distinct()                            // 去重，避免重複項目
                   .ToArray();
@@ -141,18 +145,18 @@ namespace VictorDev.RTSP
         /// 從RTSP渲染器內移除渲染對像
         /// </summary>
         public void RemoveRenderingTarget(GameObject target)
-            => ump.RenderingObjects = ump.RenderingObjects.Where(obj => obj != target).ToArray();
+            => Ump.RenderingObjects = Ump.RenderingObjects.Where(obj => obj != target).ToArray();
 
         private void RemoveRtspListener()
         {
             // 移除所有事件
-            ump.RemoveBufferingEvent(OnBufferingHandler);
-            ump.RemovePathPreparedEvent(OnPathPreparedHandler);
-            ump.RemoveImageReadyEvent(OnImageReadyHandler);
-            ump.RemovePreparedEvent(OnPreparedEventHandler);
-            ump.RemovePlayingEvent(OnPlayingHandler);
-            ump.RemoveStoppedEvent(OnStoppedHandler);
-            ump.RemoveEncounteredErrorEvent(OnEncounteredErrorEventHandler);
+            Ump.RemoveBufferingEvent(OnBufferingHandler);
+            Ump.RemovePathPreparedEvent(OnPathPreparedHandler);
+            Ump.RemoveImageReadyEvent(OnImageReadyHandler);
+            Ump.RemovePreparedEvent(OnPreparedEventHandler);
+            Ump.RemovePlayingEvent(OnPlayingHandler);
+            Ump.RemoveStoppedEvent(OnStoppedHandler);
+            Ump.RemoveEncounteredErrorEvent(OnEncounteredErrorEventHandler);
         }
 
         private void OnDisable()

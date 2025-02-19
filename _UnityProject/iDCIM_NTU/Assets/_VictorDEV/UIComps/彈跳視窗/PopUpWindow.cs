@@ -6,12 +6,14 @@ namespace VictorDev.Advanced
 {
     public abstract class PopUpWindow : MonoBehaviour
     {
+        /// 處理顯示BlackScreen
         protected void ToShow()
         {
             gameObject.SetActive(true);
             BlackScreen?.SetActive(true);
         }
 
+        /// 處理隱藏BlackScreen
         public void ToClose()
         {
             gameObject.SetActive(false);
