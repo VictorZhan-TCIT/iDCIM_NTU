@@ -29,6 +29,8 @@ namespace VictorDev.DoTweenUtils
         public CanvasGroup canvasGroup => _canvasGroup ??= GetComponent<CanvasGroup>();
         #endregion
 
+        [Header(">>> [Event] 當動畫結束時Invoke")]
+        public UnityEvent onAnimateFinished = new UnityEvent();
         [Header(">>> [Event] OnEabled時Invoke")]
         public UnityEvent onEnabledEvent = new UnityEvent();
         [Header(">>> [Event] OnDisabled時Invoke")]
@@ -57,7 +59,7 @@ namespace VictorDev.DoTweenUtils
             cg.alpha = 0;
             void CheckAlpha() => cg.interactable = cg.blocksRaycasts = cg.alpha == 1;
             CheckAlpha();
-            cg.DOFade(1, duration).From(0).SetEase(ease).SetDelay(targetDelay).OnUpdate(CheckAlpha);
+            cg.DOFade(1, duration).From(0).SetEase(ease).SetDelay(targetDelay).OnUpdate(CheckAlpha).OnComplete(()=>onAnimateFinished?.Invoke());
 
             if (isDoMove) targetTrans.DOLocalMove(originalPos ?? Vector3.zero, duration).From(fromPos).SetEase(ease).SetDelay(targetDelay);
             if (isDoScale) targetTrans.DOScale(originalScale ?? Vector3.zero, duration).From(new Vector3(fromScaleValue, fromScaleValue, fromScaleValue)).SetEase(ease).SetDelay(targetDelay);

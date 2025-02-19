@@ -8,17 +8,16 @@ namespace _VictorDEV.DateTimeUtils
 {
     /// 自動調整Options內容至目前的年份
     [RequireComponent(typeof(TMP_Dropdown))]
-    public class AutoAdjustYearDetector : Module
+    public class AutoAdjustYearDetector : MonoBehaviour
     {
         [Header(">>> 增減年數")]
         [SerializeField] private int adjustYear = 0;
 
-        public override void OnInit(Action onInitComplete = null)
+        private void Start()
         {
             UpdateUI();
-            onInitComplete.Invoke();
         }
-        
+
         private void UpdateUI()
         {
             string firstLabel = DropdownInstance.options[0].text.Trim();

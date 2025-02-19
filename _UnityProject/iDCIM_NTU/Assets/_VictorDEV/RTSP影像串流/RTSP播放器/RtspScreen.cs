@@ -115,7 +115,7 @@ namespace VictorDev.RTSP
 
         public void Pause() => Ump.Pause();
         
-        [ContextMenu("- Play")] private void Context_Play() => Play();
+        [ContextMenu("- Play")] public void Context_Play() => Play();
         public void Play(string url = "")
         {
             if (string.IsNullOrEmpty(url) == false) URL = url;

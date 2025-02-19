@@ -10,7 +10,7 @@ public class CCTV_Manager : ModulePage
 {
     [Header("[資料項] - RTSP資料設定")] [SerializeField]
     private List<SoData_RTSP_Channel> rtspChannels = new List<SoData_RTSP_Channel>();
-    
+
     public override void OnInit(Action onInitComplete = null)
     {
     }
@@ -22,60 +22,58 @@ public class CCTV_Manager : ModulePage
 
     protected override void OnShowHandler()
     {
-        cctvModelHandlers.ForEach(target =>
-        {
-            target.gameObject.SetActive(true);
-        });
+        cctvLandmarkContainer.SetActive(true);
     }
 
     protected override void OnCloseHandler()
     {
-        cctvModelHandlers.ForEach(target =>
-        {
-            target.gameObject.SetActive(false);
-            target.IsOn = false;
-        });
+        cctvLandmarks.ForEach(target => { target.IsOn = false; });
+        cctvLandmarkContainer.SetActive(false);
     }
 
     protected override void InitEventListener()
     {
-        cctvModelHandlers.ForEach(target=> target.onClickScaleButton.AddListener(OnClickScaleButtonHandler));
-        cctvPanels.ForEach(target=> target.onClickScaleButton.AddListener(OnClickScaleButtonHandler));
+        cctvLandmarks.ForEach(target => target.onClickScaleButton.AddListener(OnClickScaleButtonHandler));
+        cctvPanels.ForEach(target => target.onClickScaleButton.AddListener(OnClickScaleButtonHandler));
     }
 
     protected override void RemoveEventListener()
     {
-        cctvModelHandlers.ForEach(target=> target.onClickScaleButton.RemoveListener(OnClickScaleButtonHandler));
-        cctvPanels.ForEach(target=> target.onClickScaleButton.RemoveListener(OnClickScaleButtonHandler));
+        cctvLandmarks.ForEach(target => target.onClickScaleButton.RemoveListener(OnClickScaleButtonHandler));
+        cctvPanels.ForEach(target => target.onClickScaleButton.RemoveListener(OnClickScaleButtonHandler));
     }
 
     #region Variables
-    [FormerlySerializedAs("cctvModelHandler")]
-    [FormerlySerializedAs("cctvLandmarks")]
-    [Header(">>> CCTV浮動圖標")]
-    [SerializeField] private List<CCTV_ModelHandler> cctvModelHandlers = new List<CCTV_ModelHandler>();
 
-    [Header(">>> CCTV視窗")]
-    [SerializeField] private List<CCTV_Panel> cctvPanels = new List<CCTV_Panel>();
-    
+    [Header(">>> CCTV浮動圖標")] [SerializeField]
+    private List<CCTV_Landmark> cctvLandmarks = new List<CCTV_Landmark>();
+
+    [Header(">>> CCTV視窗")] [SerializeField]
+    private List<CCTV_Panel> cctvPanels = new List<CCTV_Panel>();
+
     [Header(">>> CCTV全螢幕")] [SerializeField]
     private CCTVFullScreenPlayer cctvFullScreenPlayer;
+
+    [SerializeField] private GameObject cctvLandmarkContainer;
     #endregion
-    
+
     #region ContextMenu
-    [ContextMenu("- Find_CCTV_ModelHandler")]
-    private void Find_CCTV_ModelHandler()
+
+    [ContextMenu("- Find_CCTV_Landmark")]
+    private void Find_CCTV_Landmark()
     {
-        cctvModelHandlers = FindObjectsOfType<CCTV_ModelHandler>().OrderBy(target=>target.name).ToList();
-        cctvModelHandlers.Zip(rtspChannels, (target, rtspChannel) => target.RtspData = rtspChannel).ToList();
-        cctvModelHandlers.ForEach(target => EditorUtility.SetDirty(target));
+        cctvLandmarks = FindObjectsOfType<CCTV_Landmark>().OrderBy(target => target.name).ToList();
+        cctvLandmarks.Zip(rtspChannels, (target, rtspChannel) => target.RtspData = rtspChannel).ToList();
+        cctvLandmarks.ForEach(target => EditorUtility.SetDirty(target));
     }
+
     [ContextMenu("- Find_CCTV_Panel")]
     private void Find_CCTV_Panel()
     {
-        cctvPanels = FindObjectsOfType<CCTV_Panel>().OrderBy(target=>target.name).ToList();
+        cctvPanels = FindObjectsOfType<CCTV_Panel>().OrderBy(target => target.name).ToList();
         cctvPanels.Zip(rtspChannels, (target, rtspChannel) => target.RtspData = rtspChannel).ToList();
         cctvPanels.ForEach(target => EditorUtility.SetDirty(target));
     }
+
     #endregion
 }
