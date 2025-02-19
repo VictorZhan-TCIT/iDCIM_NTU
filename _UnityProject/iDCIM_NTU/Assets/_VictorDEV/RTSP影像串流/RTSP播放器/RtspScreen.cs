@@ -55,7 +55,7 @@ namespace VictorDev.RTSP
                 while (Ump.RenderingObjects == null) yield return null;
                 action.Invoke();
             }
-            coroutineList.Add(StartCoroutine(CheckUMPInit()));
+            if(gameObject.activeInHierarchy) coroutineList.Add(StartCoroutine(CheckUMPInit()));
         }
 
 

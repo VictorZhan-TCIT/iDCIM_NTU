@@ -30,6 +30,7 @@ public class CCTV_Landmark : CCTV_DataHandler
         
         TxtLabel.SetText(rtspData.name.Split("-")[0].Trim());
         TxtLabelSelected.SetText(rtspData.name.Split("-")[0].Trim());
+        TxtNumber.SetText(rtspData.name.Split("-")[1].Trim());
     }
 
     private void OnDisable()
@@ -61,6 +62,10 @@ public class CCTV_Landmark : CCTV_DataHandler
 
     private RtspScreen _rtspScreen;
 
+    
+    private TextMeshProUGUI TxtNumber => _txtNumber ??= transform.Find("UI").GetChild(0).GetChild(0).Find("txtNumber").GetComponent<TextMeshProUGUI>();
+    private TextMeshProUGUI _txtNumber;
+    
     private TextMeshProUGUI TxtLabel => _txtLabel ??= transform.Find("UI").GetChild(0).Find("txtLabel").GetComponent<TextMeshProUGUI>();
     private TextMeshProUGUI _txtLabel;
     
