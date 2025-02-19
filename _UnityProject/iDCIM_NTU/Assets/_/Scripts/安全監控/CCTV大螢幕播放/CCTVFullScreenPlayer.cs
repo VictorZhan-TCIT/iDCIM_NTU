@@ -7,16 +7,16 @@ using VictorDev.Advanced;
 /// CCTV放大畫面視窗
 public class CCTVFullScreenPlayer : PopUpWindow
 {
-    public void Show(CCTV_InfoPanel panel)
+    /*public void Show(CCTV_InfoPanel panel)
     {
-        _cctvPanel = panel;
+       // _cctvPanel = panel;
         UpdateUI();
-    }
+    }*/
 
     private void UpdateUI()
     {
-        TxtTitle.SetText(_cctvPanel.data.name);
-        _cctvPanel.RtspScreen.AddRenderingTarget(RawImg.gameObject);
+        //TxtTitle.SetText(_cctvPanel.data.name);
+        //_cctvPanel.RtspScreen.AddRenderingTarget(RawImg.gameObject);
         gameObject.SetActive(true);
         RawImg.gameObject.SetActive(true);
         ToShow();
@@ -33,13 +33,13 @@ public class CCTVFullScreenPlayer : PopUpWindow
         ToClose();
         RawImg.gameObject.SetActive(false);
         BtnClose.onClick.RemoveListener(ToClose);
-        _cctvPanel?.RtspScreen.RemoveRenderingTarget(RawImg.gameObject);
+        //_cctvPanel?.RtspScreen.RemoveRenderingTarget(RawImg.gameObject);
     }
     #endregion
     
     #region [Components]
-    [Header("[資料項]")]
-    private CCTV_InfoPanel _cctvPanel;
+    //[Header("[資料項]")]
+    //private CCTV_InfoPanel _cctvPanel;
     private RawImage RawImg => _rawImg ??= transform.Find("imgBkg").Find("rawImg").GetComponent<RawImage>();
     private RawImage _rawImg;
     private TextMeshProUGUI TxtTitle => _txtTitle ??= transform.Find("txtTitle").GetComponent<TextMeshProUGUI>();

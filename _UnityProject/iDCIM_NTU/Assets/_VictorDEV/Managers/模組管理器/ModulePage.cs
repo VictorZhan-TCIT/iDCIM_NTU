@@ -35,14 +35,14 @@ public abstract class ModulePage : Module
 
     private void ToShow()
     {
-        MaterialHandler.ReplaceMaterialWithExclude(modelForDisplay.modelsList.ToHashSet());
+        ModelMaterialHandler.ReplaceMaterialWithExclude(modelForDisplay.modelsList.ToHashSet());
         OnShowHandler();
         InitEventListener();
         content.SetActive(true);
     }
     private void ToHide()
     {
-        MaterialHandler.RestoreOriginalMaterials();
+        ModelMaterialHandler.RestoreOriginalMaterials();
         OnCloseHandler();
         RemoveEventListener();
         if(content!=null)content.SetActive(false);

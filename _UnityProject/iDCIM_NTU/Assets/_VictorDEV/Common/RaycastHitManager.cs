@@ -210,7 +210,7 @@ namespace VictorDev.Common
 
         public static void CancellObjectSelected(string modelName, bool isInvokeEvent = true)
         {
-            List<Transform> model = MaterialHandler.FindTargetObjects(modelName);
+            List<Transform> model = ModelMaterialHandler.FindTargetObjects(modelName);
             if (model.Count > 0) CancellObjectSelected(model[0]);
         }
 

@@ -16,7 +16,7 @@ namespace VictorDev.Common
 
         public void FindTargetObjects()
         {
-            models = MaterialHandler.FindTargetObjects(objKeyWords);
+            models = ModelMaterialHandler.FindTargetObjects(objKeyWords);
         }
 
         public void AddColliderToObjects()

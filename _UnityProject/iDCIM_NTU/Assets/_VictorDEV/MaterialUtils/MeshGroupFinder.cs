@@ -76,7 +76,7 @@ namespace VictorDev.MaterialUtils
         }
 
         [ContextMenu("- 顯示管線(不會先恢復所有模型材質)")]
-        public void ToShow() => ModelMaterialHandler.ToShow(modelFindGroup);
+        //  public void ToShow() => ModelMaterialHandler.ToShow(modelFindGroup);
 
         [ContextMenu("- 添加Collider")]
         public void AddCollider()

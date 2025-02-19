@@ -162,7 +162,7 @@ namespace VictorDev.RTSP
             {
                 if (coroutine != null) StopCoroutine(coroutine);
             });
-            ump.Release();
+            //ump.Release();
         }
         private void OnDestroy() => RemoveRtspListener();
 

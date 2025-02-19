@@ -3,7 +3,7 @@ using UnityEngine.Rendering;
 
 namespace VictorDev.MaterialUtils
 {
-    public static class MaterialHandler
+    public static class MaterialHelper
     {
         /// 将材质设置为透明模式
         public static void SetTransparentMode(Material targetMaterial)
