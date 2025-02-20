@@ -1,16 +1,10 @@
 using System;
 using UnityEngine;
-using VictorDev.RTSP;
-using VictorDev.RTSP;
 
 public class AccessRecordManager : ModulePage
 {
    
     public override void OnInit(Action onInitComplete = null)
-    {
-    }
-
-    private void OnClickScaleButtonHandler(string label, RtspScreen rtspScreen)
     {
     }
 

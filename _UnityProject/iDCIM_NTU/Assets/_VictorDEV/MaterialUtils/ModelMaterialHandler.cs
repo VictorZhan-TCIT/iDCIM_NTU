@@ -24,7 +24,8 @@ namespace VictorDev.Common
         private Dictionary<Transform, Material[]> originalMaterials { get; set; } = new Dictionary<Transform, Material[]>();
 
         /// 根據關鍵字，針對目標物件底下所有子物件進行比對，找出名字包含關鍵字的子物件
-        public static List<Transform> FindTargetObjects(List<string> keyWords) => ObjectHandler.FindObjectsByKeywords(Instance.targetTransform, keyWords);
+        public static List<Transform> FindTargetObjects(List<string> keyWords) => ObjectHandler.FindObjectsByKeywords(Instance.targetTransform, keyWords)
+            .Where(target=>target.GetComponent<MeshRenderer>() != null).ToList();
 
         /// 根據關鍵字，針對目標物件底下所有子物件進行比對，找出名字包含關鍵字的子物件
         public static List<Transform> FindTargetObjects(string keyWord) => ObjectHandler.FindObjectsByKeyword(Instance.targetTransform, keyWord);
