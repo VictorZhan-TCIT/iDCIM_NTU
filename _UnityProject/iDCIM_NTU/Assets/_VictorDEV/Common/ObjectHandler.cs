@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
 namespace VictorDev.Common
@@ -146,6 +147,28 @@ namespace VictorDev.Common
                 }
             }
             return list;
+        }
+        
+        /// 取得場景上所有包含T類別的物件(包括inactive)
+        public static List<T> FindAllObjectOfType<T>() where T : class
+        {
+            IEnumerable<GameObject> GetAllChildren(GameObject parent)
+            {
+                yield return parent;
+                foreach (Transform child in parent.transform)
+                {
+                    foreach (var descendant in GetAllChildren(child.gameObject))
+                    {
+                        yield return descendant;
+                    }
+                }
+            }
+
+            List<T> result = SceneManager.GetActiveScene()
+                .GetRootGameObjects() // 取得所有根物件
+                .SelectMany(GetAllChildren).Where(obj => obj.GetComponent<T>() != null)
+                .Select(target=>target.GetComponent<T>()).ToList(); // 遍歷所有子物件
+            return result;
         }
     }
 }

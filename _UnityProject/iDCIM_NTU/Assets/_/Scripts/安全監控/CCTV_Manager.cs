@@ -8,8 +8,7 @@ using VictorDev.RTSP;
 
 public class CCTV_Manager : ModulePage
 {
-    [Header("[資料項] - RTSP資料設定")] [SerializeField]
-    private List<SoData_RTSP_Channel> rtspChannels = new List<SoData_RTSP_Channel>();
+   
 
     public override void OnInit(Action onInitComplete = null)
     {
@@ -22,13 +21,13 @@ public class CCTV_Manager : ModulePage
 
     protected override void OnShowHandler()
     {
-        cctvLandmarkContainer.SetActive(true);
+        LandmarkContainer.SetActive(true);
     }
 
     protected override void OnCloseHandler()
     {
         cctvLandmarks.ForEach(target => { target.IsOn = false; });
-        cctvLandmarkContainer.SetActive(false);
+        LandmarkContainer.SetActive(false);
     }
 
     protected override void InitEventListener()
@@ -45,6 +44,9 @@ public class CCTV_Manager : ModulePage
 
     #region Variables
 
+    [Header("[資料項] - RTSP資料設定")] [SerializeField]
+    private List<SoData_RTSP_Channel> rtspChannels = new List<SoData_RTSP_Channel>();
+    
     [Header(">>> CCTV浮動圖標")] [SerializeField]
     private List<CCTV_Landmark> cctvLandmarks = new List<CCTV_Landmark>();
 
@@ -54,7 +56,8 @@ public class CCTV_Manager : ModulePage
     [Header(">>> CCTV全螢幕")] [SerializeField]
     private CCTVFullScreenPlayer cctvFullScreenPlayer;
 
-    [SerializeField] private GameObject cctvLandmarkContainer;
+    ///CCTV圖標Container
+    private GameObject LandmarkContainer => cctvLandmarks[0].transform.parent.gameObject;
     #endregion
 
     #region ContextMenu

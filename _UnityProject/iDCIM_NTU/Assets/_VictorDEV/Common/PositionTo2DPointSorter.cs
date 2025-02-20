@@ -23,7 +23,8 @@ namespace _VictorDEV.Common
         [ContextMenu("- 擷取場景上所有PositionTo2DPoint")]
         private void GetAllLandmarks()
         {
-            landmarkList = FindObjectsOfType<PositionTo2DPoint>().ToList();
+            //landmarkList = Resources.FindObjectsOfTypeAll<PositionTo2DPoint>().OrderBy(target=>target.name).ToList();
+            landmarkList = ObjectHandler.FindAllObjectOfType<PositionTo2DPoint>();
         }
     }
 }
